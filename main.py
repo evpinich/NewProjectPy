@@ -46,9 +46,7 @@ list_resolt = []
 
 for i in range (len(list_a)):
     list_resolt.append((list_a[i],list_b[i],))
-
-tuple_e = tuple ( list_resolt )
-print(tuple_e)
+print(list_resolt)
 
 print('===============  TASK № 2.2 ======================================================================')
 list_d = ["bar", "baz", "qux", "etc"]
