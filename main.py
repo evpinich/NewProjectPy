@@ -37,3 +37,20 @@ if n in list5 :
     print ( "число - ", n, " входить в заданий список чисел")
 else:
     print("число - ", n, " не входить в заданий список чисел")
+
+print('===============  TASK № 2.1 ======================================================================')
+list_a = [1, 2, 3, 4]
+list_b = [5, 6, 7, 8]
+
+list_resolt = []
+
+for i in range (len(list_a)):
+    list_resolt.append((list_a[i],list_b[i],))
+
+tuple_e = tuple ( list_resolt )
+print(tuple_e)
+
+print('===============  TASK № 2.2 ======================================================================')
+list_d = ["bar", "baz", "qux", "etc"]
+tuple_d = ("foo",*list_d)
+print(tuple_d)
