@@ -1,13 +1,126 @@
-print('===============  TASK №* ======================================================================')
-# Задача  со звездочкой
-# Дана строка
-# '{"perm":{"entityType":"COMPANY"},"parentId":-4270,"value":["85166"]}'
-# Вінести число 85166
-# в отдельную переменную и написать код форматирования исходной строки так чтобі Мі ето число вставляли как переменную
-# Смотрите тему форматирование строк
+import json
+# ----------------------------------------------------------------------------
+row_value = {
+    'perm': {'fkOtherParameter': '84',
+             'fkLifeCycleTs': '14',
+             'fkDataQuality': '85',
+             'fkHistoricCompany': '33',
+             'fkOilAndGas': '12'},
+    'parentId': -7124,
+    'props': {'lifeCycleDetailTs': 'Producing >75%',
+              'lifeCycleCategoryTs': 'Producing',
+              'lifeCycleDetail': 'Producing >75%',
+              'historicCompany': 'Petronas',
+              'dataType': 'Modeled'}
+}
+schema = {
+    'keys': [
+        {'keyType': 'STRING', 'name': 'FK Asset'},
+        {'keyType': 'INT', 'name': 'FK Other Parameter'},
+        {'keyType': 'INT', 'name': 'FK Oil And Gas'},
+        {'keyType': 'INT', 'name': 'FK Historic Company'},
+        {'keyType': 'INT', 'name': 'FK Life Cycle TS'},
+        {'keyType': 'INT', 'name': 'FK Life Cycle'},
+        {'keyType': 'STRING', 'name': 'FK Company'},
+        {'keyType': 'INT', 'name': 'FK Economics Type'},
+        {'keyType': 'INT', 'name': 'FK Data Quality'},
+        {'keyType': 'INT', 'name': 'FK Oil And Gas Type'},
+        {'keyType': 'STRING', 'name': 'Time Series Name'},
+        {'keyType': 'STRING', 'name': 'Commerciality'},
+        {'keyType': 'STRING', 'name': 'Entitlement'},
+        {'keyType': 'STRING', 'name': 'Green Brown Field'},
+        {'keyType': 'STRING', 'name': 'Minority Interest'},
+        {'keyType': 'STRING', 'name': 'Oil And Gas Category'},
+        {'keyType': 'STRING', 'name': 'Oil And Gas Group'},
+        {'keyType': 'STRING', 'name': 'Oil And Gas Detail'},
+        {'keyType': 'STRING', 'name': 'Historic Company'},
+        {'keyType': 'STRING', 'name': 'Historical Company Segment'},
+        {'keyType': 'STRING', 'name': 'Historical Company Subsegment'},
+        {'keyType': 'STRING', 'name': 'Life Cycle Category TS'},
+        {'keyType': 'STRING', 'name': 'Life Cycle Detail TS'},
+        {'keyType': 'STRING', 'name': 'Life Cycle Group TS'},
+        {'keyType': 'STRING', 'name': 'Life Cycle Detail'},
+        {'keyType': 'STRING', 'name': 'Life Cycle Category'},
+        {'keyType': 'STRING', 'name': 'Life Cycle Group'},
+        {'keyType': 'STRING', 'name': 'Economics Group'},
+        {'keyType': 'STRING', 'name': 'Economics Category'},
+        {'keyType': 'STRING', 'name': 'Data Confidence'},
+        {'keyType': 'STRING', 'name': 'Data Source'},
+        {'keyType': 'STRING', 'name': 'Data Type'},
+        {'keyType': 'STRING', 'name': 'Oil And Gas Type Detail'},
+        {'keyType': 'STRING', 'name': 'Currency'},
+        {'keyType': 'STRING', 'name': 'Frequency'}
+    ]
+}
+#  convert input dict to one level dict with lowercase of key ----------------
 
-int_num = 85166
-print('{"perm":{"entityType":"COMPANY"},"parentId":-4270,"value":["%s"]}' % int_num )
+row_value_as_one_level_dict = row_value['perm'] | row_value['props']
+list_of_key_from_row_value = [key.casefold() for key in row_value_as_one_level_dict.keys()]
+list_of_value_from_row_value = list( row_value_as_one_level_dict.values())
+row_value_dict = dict(zip(list_of_key_from_row_value, list_of_value_from_row_value))
+print(row_value_dict)
+
+#  convert  row_value_dict according to schema -------------------------------
+
+schema_to_list = schema['keys']
+
+print(' ****************************  OUTPUT *******************************')
+for nested_dict in schema_to_list:
+    if nested_dict['name'].replace(" ","").casefold() in row_value_dict:
+        nested_dict['keyType'] = row_value_dict[nested_dict ['name'].replace(" ","").casefold()]
+    else:
+        nested_dict['keyType'] = 1 if nested_dict['keyType'] == 'INT' else " "
+    print(nested_dict)
+
+#  convert to json format and saving to file ---------------------------------
+
+json_dict = {'keys': schema_to_list}
+with open("output.json", "w") as outfile:
+    json.dump(json_dict, outfile)
+
+# HW dict
+# Создайте словарь с количеством элементов не менее 5-ти. Поменяйте местами значения первого и последнего элемент объекта. Удалите второй элемент. Добавьте в конец ключ «new_key» со значением «new_value». Выведите на печать итоговый словарь. Важно, чтобы словарь остался тем же (имел тот же адрес в памяти).
+# Как получить значение по ключу "marks" словаря student = {"name": "Emma", "class": 9, "marks": 75}
+# Что выведет этот код?
+# p = {"name": "Mike", "salary": 8000} print(p.get("age")).
+#
+# Как получить "d": sample = {"1":["a","b"], "2":["c","d"]}.
+# Дан список стран и городов каждой страны. Затем даны названия городов. Для каждого города укажите, в какой стране он находится.
+# Дано
+# list_1 = ["Украина-Киев", "Россия-Сочи", "Беларусь-Минск", "Япония-Токио", "Германия-Мюнхен"]
+# list_2 = ["Киев", "Токио", "Минск"]
+# Получить
+# dict_ = ["Украина": "Киев", "Япония": "Токио", "Беларусь": "Минск"]
+
+# Сгенерировать словарь-шифратор, то есть словарь, где ключ и значение являются символами. Используя словарь, зашифровать/расшифровать введенное сообщение.
+# Создайте словарь, в котором ключами будут числа от 1 до 10, а значениями эти же числа, возведенные в куб.
+# Создайте словарь из строки следующим образом: в качестве ключей возьмите буквы строки, а значениями пусть будут числа, соответствующие количеству вхождений данной буквы в строку.
+# Создайте словарь, связав его с переменной school, и наполните данными, которые бы отражали количество учащихся в разных классах (1а, 1б, 2б, 6а, 7в и т. п.). Внесите изменения в словарь согласно следующему: а) в одном из классов изменилось количество учащихся, б) в школе появился новый класс, с) в школе был расформирован (удален) другой класс. Вычислите общее количество учащихся в школе.
+# Создайте словарь, где ключами являются числа, а значениями – строки. Создайте функционал которий вернет новый словарь, "обратный" исходному, т. е. ключами являются строки, а значениями – числа.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 # print('===============  TASK №1 ======================================================================')
